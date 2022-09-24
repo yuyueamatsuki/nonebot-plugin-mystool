@@ -151,11 +151,13 @@ async def perform_game_sign(bot: Bot, qq: str, isAuto: bool):
                     else:
                         sign_award = month_sign_award[sign_info.totalDays-1]
                         if sign_info.isSign:
-                            msg = f"""\
-                                \n📱账户 {account.phone}\
-                                \n🎮『{game_name}』今日签到成功！\
+                            msg1 = f"""\
+                                \n{'📱账户 {}'.format(account.phone)}\
+                                \n{'🎮『{}』今日签到成功！'.format(game_name)}\
                                 \n{record.nickname}·{record.regionName}·{record.level}\
-                                \n🎁今日签到奖励：\
+                            """.strip()
+                            msg2 = f"""
+                                🎁今日签到奖励：\
                                 \n{sign_award.name} * {sign_award.count}\
                                 \n\n📅本月签到次数：{sign_info.totalDays}\
                             """.strip()
@@ -167,7 +169,13 @@ async def perform_game_sign(bot: Bot, qq: str, isAuto: bool):
                     await bot.send_msg(
                         message_type="private",
                         user_id=qq,
-                        message=msg + img
+                        message=msg1
+                    )
+                    await asyncio.sleep(1)
+                    await bot.send_msg(
+                        message_type="private",
+                        user_id=qq,
+                        message=msg2 + img
                     )
                 await asyncio.sleep(conf.SLEEP_TIME)
 

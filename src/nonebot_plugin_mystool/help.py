@@ -9,6 +9,7 @@ from nonebot.matcher import Matcher
 from nonebot.params import Arg, CommandArg
 from .config import mysTool_config as conf
 from .utils import PLUGIN
+import asyncio
 
 COMMAND = list(get_driver().config.command_start)[0] + conf.COMMAND_START
 
@@ -33,11 +34,17 @@ async def handle_first_receive(event: MessageEvent, matcher: Matcher, args: Mess
         matcher.set_arg("content", args)
     # 只有主命令“帮助”
     else:
-        await matcher.finish(
+        msg = PLUGIN.metadata.usage.format(HEAD=COMMAND).replace('(商品ID)', '(商品ID)123').replace('手动进行游戏签到', '手动进行游戏签到123').replace('结果通知','结果通知123').split('123')
+        await matcher.send(
             PLUGIN.metadata.name +
-            PLUGIN.metadata.description +
-            "\n具体用法：\n" +
-            PLUGIN.metadata.usage.format(HEAD=COMMAND))
+            PLUGIN.metadata.description.strip() +
+             "具体用法：\n" +msg[0]
+            )
+        await matcher.send(msg[1].strip())
+        await asyncio.sleep(0.5)
+        await matcher.send(msg[2].strip())
+        await asyncio.sleep(0.5)
+        await matcher.send(msg[3].strip())
 
 
 @helper.got('content')
