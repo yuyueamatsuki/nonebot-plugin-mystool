@@ -100,7 +100,7 @@ class Config(BaseModel, extra=Extra.ignore):
     ENCODING: str = "utf-8"
     '''文件读写编码'''
 
-    MAX_USER: int = 10
+    MAX_USER: int = 20
     '''支持最多用户数'''
     ADD_FRIEND_ACCEPT: bool = True
     '''是否自动同意好友申请'''
